@@ -10,6 +10,8 @@ import UIKit
 
 class CardGameViewController: UIViewController {
 
+    private lazy var deck: Deck = PlayingCardDeck()
+
     @IBOutlet weak var flipsLabel: UILabel!
 
     var flipsCount: UInt = 0 {
@@ -23,11 +25,14 @@ class CardGameViewController: UIViewController {
         if (sender.currentTitle != nil) {
             sender.setBackgroundImage(UIImage(named: "CardBack"), forState: .Normal)
             sender.setTitle(nil, forState: .Normal)
+            flipsCount++;
         } else {
-            sender.setBackgroundImage(UIImage(named: "CardFront"), forState: .Normal)
-            sender.setTitle("A♣︎", forState: .Normal)
+            if let randomCard = deck.drawRandomCard() {
+                sender.setBackgroundImage(UIImage(named: "CardFront"), forState: .Normal)
+                sender.setTitle(randomCard.contents, forState: .Normal)
+                flipsCount++;
+            }
         }
-        flipsCount++;
     }
 
 }
