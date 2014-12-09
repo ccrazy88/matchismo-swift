@@ -10,28 +10,52 @@ import UIKit
 
 class CardGameViewController: UIViewController {
 
-    private lazy var deck: Deck = PlayingCardDeck()
+    // MARK: -
+    // MARK: Private properties
 
-    @IBOutlet weak var flipsLabel: UILabel!
+    private lazy var game: CardMatchingGame = CardMatchingGame(
+        cardCount: UInt(self.cardButtons.count), deck: self.createDeck())!
 
-    var flipsCount: UInt = 0 {
-        didSet {
-            flipsLabel.text = "Flips: \(flipsCount)"
-            println("flipsCount changed to \(flipsCount)")
-        }
-    };
+    // MARK: Outlets
+
+    @IBOutlet private var cardButtons: [UIButton]!
+    @IBOutlet private weak var scoreLabel: UILabel!
+
+    // MARK: -
+    // MARK: Utilities
+
+    private func createDeck() -> Deck {
+        return PlayingCardDeck()
+    }
+
+    private func titleForCard(card: Card) -> String? {
+        return card.chosen ? card.contents : nil
+    }
+
+    private func backgroundImageForCard(card: Card) -> UIImage {
+        return UIImage(named: card.chosen ? "CardFront" : "CardBack")!
+    }
+
+    // MARK: -
+    // MARK: Game
 
     @IBAction func touchCardButton(sender: UIButton) {
-        if (sender.currentTitle != nil) {
-            sender.setBackgroundImage(UIImage(named: "CardBack"), forState: .Normal)
-            sender.setTitle(nil, forState: .Normal)
-            flipsCount++;
-        } else {
-            if let randomCard = deck.drawRandomCard() {
-                sender.setBackgroundImage(UIImage(named: "CardFront"), forState: .Normal)
-                sender.setTitle(randomCard.contents, forState: .Normal)
-                flipsCount++;
-            }
+        let cardButtonIndex = find(cardButtons, sender)!
+        game.chooseCardAtIndex(UInt(cardButtonIndex))
+        updateUI()
+    }
+
+    // MARK: -
+    // MARK: UI
+
+    func updateUI() {
+        for cardButton in cardButtons {
+            let cardButtonIndex = find(cardButtons, cardButton)!
+            let card = game.cardAtIndex(UInt(cardButtonIndex))!
+            cardButton.setTitle(titleForCard(card), forState: .Normal)
+            cardButton.setBackgroundImage(backgroundImageForCard(card), forState: .Normal)
+            cardButton.enabled = !card.matched
+            scoreLabel.text = "Score: \(game.score)"
         }
     }
 

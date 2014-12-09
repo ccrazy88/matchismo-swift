@@ -24,6 +24,7 @@ class Card: NSObject {
         self.contents = contents
         self.chosen = chosen
         self.matched = matched
+        super.init()
     }
 
     // MARK: -

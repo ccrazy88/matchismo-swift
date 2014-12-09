@@ -6,10 +6,7 @@
 //  Copyright (c) 2014 Chrisna Aing. All rights reserved.
 //
 
-import UIKit
-
 class PlayingCardDeck: Deck {
-
 
     // MARK: -
     // MARK: Initializers

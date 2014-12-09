@@ -29,7 +29,7 @@ class PlayingCard: Card {
 
     var rank: UInt {
         get {
-            return (_rank != nil) ? _rank! : 0
+            return _rank ?? 0
         }
         set (newRank) {
             if newRank <= Utility.maxRank {
@@ -40,7 +40,7 @@ class PlayingCard: Card {
 
     var suit: String {
         get {
-            return (_suit != nil) ? _suit! : "?"
+            return _suit ?? "?"
         }
         set (newSuit) {
             if contains(Utility.validSuits, newSuit) {
@@ -60,7 +60,6 @@ class PlayingCard: Card {
     // MARK: Initializers
 
     init(rank: UInt, suit: String, chosen: Bool = false, matched: Bool = false) {
-        // Hack?
         super.init(contents: "", chosen: chosen, matched: matched)
         self.rank = rank
         self.suit = suit
@@ -80,5 +79,22 @@ class PlayingCard: Card {
     class func rankStrings() -> [String] {
         return Utility.rankStrings
     }
-    
+
+    // MARK: -
+    // MARK: Card Matching
+
+    override func match(otherCards: [Card]) -> Int {
+        var score = 0
+        if otherCards.count == 1 {
+            if let otherCard = otherCards.first as? PlayingCard {
+                if rank == otherCard.rank {
+                    score = 4
+                } else if suit == otherCard.suit {
+                    score = 1
+                }
+            }
+        }
+        return score
+    }
+
 }
