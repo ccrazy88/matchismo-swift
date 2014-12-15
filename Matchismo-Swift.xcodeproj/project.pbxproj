@@ -17,6 +17,7 @@
 		99D529A519FCC33E00D52D8A /* Matchismo_SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D529A419FCC33E00D52D8A /* Matchismo_SwiftTests.swift */; };
 		99D529AF19FCC35200D52D8A /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D529AE19FCC35200D52D8A /* Card.swift */; };
 		99D529B519FCFBDC00D52D8A /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D529B419FCFBDC00D52D8A /* Deck.swift */; };
+		99E9C6791A3DA66900F1BC6C /* CardMatchingGameResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E9C6781A3DA66900F1BC6C /* CardMatchingGameResult.swift */; };
 		99F1CA801A36E82900F71D10 /* CardMatchingGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F1CA7F1A36E82900F71D10 /* CardMatchingGame.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,7 @@
 		99D529A419FCC33E00D52D8A /* Matchismo_SwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matchismo_SwiftTests.swift; sourceTree = "<group>"; };
 		99D529AE19FCC35200D52D8A /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Card.swift; path = Model/Card.swift; sourceTree = "<group>"; };
 		99D529B419FCFBDC00D52D8A /* Deck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Deck.swift; path = Model/Deck.swift; sourceTree = "<group>"; };
+		99E9C6781A3DA66900F1BC6C /* CardMatchingGameResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardMatchingGameResult.swift; path = Model/CardMatchingGameResult.swift; sourceTree = "<group>"; };
 		99F1CA7F1A36E82900F71D10 /* CardMatchingGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardMatchingGame.swift; path = Model/CardMatchingGame.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -127,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				99F1CA7F1A36E82900F71D10 /* CardMatchingGame.swift */,
+				99E9C6781A3DA66900F1BC6C /* CardMatchingGameResult.swift */,
 				99D529AE19FCC35200D52D8A /* Card.swift */,
 				994F9FBA1A00DE0100BF3351 /* PlayingCard.swift */,
 				99168BDF1A28632100C4D939 /* PlayingCardDeck.swift */,
@@ -240,6 +243,7 @@
 				99D529B519FCFBDC00D52D8A /* Deck.swift in Sources */,
 				99D5299119FCC33E00D52D8A /* CardGameViewController.swift in Sources */,
 				99168BE01A28632100C4D939 /* PlayingCardDeck.swift in Sources */,
+				99E9C6791A3DA66900F1BC6C /* CardMatchingGameResult.swift in Sources */,
 				99D529AF19FCC35200D52D8A /* Card.swift in Sources */,
 				99D5298F19FCC33E00D52D8A /* AppDelegate.swift in Sources */,
 			);

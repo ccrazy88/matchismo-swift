@@ -14,26 +14,40 @@ class CardMatchingGame: NSObject {
     // MARK: "Class" Properties
 
     // Hack!
-    private struct Multiplier {
-        static let CHOICE = 1
-        static let MATCH = 4
-        static let MISMATCH = 2
+    private struct Constant {
+        static let choice = 1
+        static let match = 4
+        static let mismatch = 2
+        static let minCardsToMatch: UInt = 2
     }
 
     // MARK: Private Properties
 
     private lazy var cards = [Card]()
+    private var _cardsToMatch: UInt?
 
     // MARK: Read-only Properties
     
     private(set) var score: Int = 0
+    private(set) lazy var history = [CardMatchingGameResult]()
+
+    // MARK: Public Properties
+
+    var cardsToMatch: UInt {
+        get { return _cardsToMatch ?? Constant.minCardsToMatch }
+        set (newCardsToMatch) {
+            if newCardsToMatch >= Constant.minCardsToMatch && newCardsToMatch <= UInt(cards.count) {
+                _cardsToMatch = newCardsToMatch
+            }
+        }
+    }
 
     // MARK: -
     // MARK: Initializers
 
     init?(cardCount: UInt, deck: Deck) {
         super.init()
-        for count in 1...cardCount {
+        for count in 0..<cardCount {
             if let card = deck.drawRandomCard() {
                 cards.append(card)
             } else {
@@ -55,28 +69,45 @@ class CardMatchingGame: NSObject {
     func chooseCardAtIndex(index: UInt) {
         if let card = cardAtIndex(index) {
             if !card.matched {
+                var otherCards = [Card]()
+                var matchAttempted = false
+                var matchScore = 0
+
                 if card.chosen {
                     card.chosen = false
                 } else {
-                    for otherCard in cards {
-                        if !otherCard.matched && otherCard.chosen {
-                            let matchScore = card.match([otherCard])
-                            if matchScore != 0 {
-                                score += matchScore * Multiplier.MATCH
-                                card.matched = true
-                                otherCard.matched = true
-                            } else {
-                                score -= Multiplier.MISMATCH
-                                otherCard.chosen = false
-                            }
-                            break
+                    // Put potential cards to match into an array.
+                    otherCards = cards.filter { !$0.matched && $0.chosen }
+                    // Only try to match the cards when there are enough of them.
+                    if otherCards.count + 1 == cardsToMatch {
+                        matchScore = card.match(otherCards)
+                        switch matchScore {
+                        case 0:
+                            matchScore += Constant.mismatch
+                            score -= matchScore
+                            otherCards.map { $0.chosen = false }
+                        default:
+                            matchScore *= Constant.match
+                            score += matchScore
+                            card.matched = true
+                            otherCards.map { $0.matched = true }
                         }
+                        matchAttempted = true
                     }
-                    score -= Multiplier.CHOICE
+                    score -= Constant.choice
                     card.chosen = true
                 }
+
+                // To capture enough information to generate text about each move that has been
+                // made, add a "result" object to an array with relevant information (i.e. cards
+                // chosen, whether or not matching was attempted, and the result of that attempt).
+                history.append(CardMatchingGameResult(
+                    cards: otherCards + filter([card]) { $0.chosen },
+                    matchAttempted: matchAttempted,
+                    matched: card.matched,
+                    matchScore: matchScore))
             }
         }
     }
-   
+
 }
