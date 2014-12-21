@@ -58,7 +58,12 @@ class CardGameViewController: UIViewController {
             let move = game.history[Int(index)]
             let cardsString = stringForCards(move.cards)
             switch (move.matchAttempted, move.matched) {
-            case (true, true): moveString = "Matched \(cardsString) for \(move.matchScore) points."
+            case (true, true):
+                moveString = "Matched \(cardsString) for \(move.matchScore) point"
+                if (move.matchScore != 1) {
+                    moveString += "s"
+                }
+                moveString += "."
             case (true, false): moveString = "\(cardsString) don't match! \(move.matchScore) point penalty!"
             case (false, _): moveString = "\(cardsString)"
             default: break
