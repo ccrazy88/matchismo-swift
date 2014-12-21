@@ -92,7 +92,8 @@ class PlayingCard: Card {
     override func match(otherCards: [Card]) -> Int {
         var score = 0
         // Matching with one other card and two other cards supported.
-        if otherCards.count == 1 {
+        switch otherCards.count {
+        case 1:
             if let otherPlayingCard = otherCards.first as? PlayingCard {
                 if rank == otherPlayingCard.rank {
                     score = 4
@@ -100,7 +101,7 @@ class PlayingCard: Card {
                     score = 1
                 }
             }
-        } else if otherCards.count == 2 {
+        case 2:
             if let otherPlayingCards = otherCards as? [PlayingCard] {
                 let allCards = [self] + otherPlayingCards
                 switch (uniqueRanks(allCards), uniqueSuits(allCards)) {
@@ -112,6 +113,7 @@ class PlayingCard: Card {
                 default: break
                 }
             }
+        default: break
         }
         return score
     }
