@@ -51,21 +51,17 @@ class CardGameViewController: UIViewController {
         return cardsString
     }
 
-    private func stringForMoveAtIndex(index: UInt, history: [CardMatchingGameResult]) -> String {
+    private func stringForMoveAtIndex(index: UInt) -> String {
         // Use the history array provided by CardMatchingGame to generate the final string.
         var moveString = ""
         if index < UInt(game.history.count) {
             let move = game.history[Int(index)]
-            let cardsString = stringForCards(move.cards)
+            let cards = stringForCards(move.cards)
+            let score = move.matchScore
             switch (move.matchAttempted, move.matched) {
-            case (true, true):
-                moveString = "Matched \(cardsString) for \(move.matchScore) point"
-                if (move.matchScore != 1) {
-                    moveString += "s"
-                }
-                moveString += "."
-            case (true, false): moveString = "\(cardsString) don't match! \(move.matchScore) point penalty!"
-            case (false, _): moveString = "\(cardsString)"
+            case (true, true): moveString = "Matched \(cards) for \(score) point" + (score != 1 ? "s." : ".")
+            case (true, false): moveString = "\(cards) don't match! \(score) point penalty!"
+            case (false, _): moveString = "\(cards)"
             default: break
             }
         }
@@ -109,7 +105,7 @@ class CardGameViewController: UIViewController {
 
     @IBAction func slideThroughHistory(sender: UISlider) {
         let historyIndex = UInt(round(sender.value))
-        historyLabel.text = stringForMoveAtIndex(historyIndex, history: game.history)
+        historyLabel.text = stringForMoveAtIndex(historyIndex)
         historyLabel.alpha = historyIndex < UInt(round(sender.maximumValue)) ? 0.5 : 1.0
     }
 
