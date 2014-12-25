@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Chrisna Aing. All rights reserved.
 //
 
+import Foundation
+
 class PlayingCardDeck: Deck {
 
     // MARK: -
