@@ -74,6 +74,8 @@ class PlayingCard: Card {
         return Utility.rankStrings
     }
 
+    // TODO: Make generic.
+
     private func uniqueRanks(cards: [PlayingCard]) -> UInt {
         var ranks = [UInt: UInt]()
         cards.map { ranks.updateValue(1, forKey: $0.rank) }
