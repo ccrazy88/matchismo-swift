@@ -9,7 +9,7 @@
         <!--CardGameViewController-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" userLabel="CardGameViewController" customClass="CardGameViewController" customModule="Matchismo_Swift" sceneMemberID="viewController">
+                <viewController id="vXZ-lx-hvc" userLabel="CardGameViewController" customClass="PlayingCardGameViewController" customModule="Matchismo_Swift" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>

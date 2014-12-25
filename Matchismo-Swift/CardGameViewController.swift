@@ -24,15 +24,19 @@ class CardGameViewController: UIViewController {
     @IBOutlet private weak var scoreLabel: UILabel!
 
     // MARK: -
+    // MARK: Abstract Utilities
+
+    func createDeck() -> Deck {
+        // Abstract; will cause application to crash if used.
+        return Deck()
+    }
+
+    // MARK: -
     // MARK: Utilities
 
     private func createGame() -> CardMatchingGame {
         // Assumes that there are fewer cardButtons than there are cards in the deck.
         return CardMatchingGame(cardCount: UInt(self.cardButtons.count), deck: self.createDeck())!
-    }
-
-    private func createDeck() -> Deck {
-        return PlayingCardDeck()
     }
 
     private func titleForCard(card: Card) -> String? {

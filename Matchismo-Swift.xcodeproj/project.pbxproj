@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		99168BE01A28632100C4D939 /* PlayingCardDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99168BDF1A28632100C4D939 /* PlayingCardDeck.swift */; };
+		994566181A4BB23A002FC45A /* PlayingCardGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 994566171A4BB23A002FC45A /* PlayingCardGameViewController.swift */; };
 		994F9FBB1A00DE0100BF3351 /* PlayingCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 994F9FBA1A00DE0100BF3351 /* PlayingCard.swift */; };
 		99D5298F19FCC33E00D52D8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D5298E19FCC33E00D52D8A /* AppDelegate.swift */; };
 		99D5299119FCC33E00D52D8A /* CardGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D5299019FCC33E00D52D8A /* CardGameViewController.swift */; };
@@ -33,6 +34,7 @@
 
 /* Begin PBXFileReference section */
 		99168BDF1A28632100C4D939 /* PlayingCardDeck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlayingCardDeck.swift; path = Model/PlayingCardDeck.swift; sourceTree = "<group>"; };
+		994566171A4BB23A002FC45A /* PlayingCardGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayingCardGameViewController.swift; sourceTree = "<group>"; };
 		994F9FBA1A00DE0100BF3351 /* PlayingCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlayingCard.swift; path = Model/PlayingCard.swift; sourceTree = "<group>"; };
 		99D5298919FCC33E00D52D8A /* Matchismo-Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Matchismo-Swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		99D5298D19FCC33E00D52D8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				99D529B019FCC36100D52D8A /* Model */,
 				99D5298E19FCC33E00D52D8A /* AppDelegate.swift */,
 				99D5299019FCC33E00D52D8A /* CardGameViewController.swift */,
+				994566171A4BB23A002FC45A /* PlayingCardGameViewController.swift */,
 				99D5299219FCC33E00D52D8A /* Main.storyboard */,
 				99D5299519FCC33E00D52D8A /* Images.xcassets */,
 				99D5299719FCC33E00D52D8A /* LaunchScreen.xib */,
@@ -245,6 +248,7 @@
 				99168BE01A28632100C4D939 /* PlayingCardDeck.swift in Sources */,
 				99E9C6791A3DA66900F1BC6C /* CardMatchingGameResult.swift in Sources */,
 				99D529AF19FCC35200D52D8A /* Card.swift in Sources */,
+				994566181A4BB23A002FC45A /* PlayingCardGameViewController.swift in Sources */,
 				99D5298F19FCC33E00D52D8A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
