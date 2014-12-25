@@ -12,7 +12,7 @@ import UIKit
 class CardGameViewController: UIViewController {
 
     // MARK: -
-    // MARK: Properties
+    // MARK: Private Properties
 
     private lazy var game: CardMatchingGame = self.createGame()
 
