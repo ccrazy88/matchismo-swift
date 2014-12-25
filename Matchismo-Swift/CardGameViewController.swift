@@ -14,11 +14,13 @@ class CardGameViewController: UIViewController {
     // MARK: -
     // MARK: Properties
 
-    lazy var game: CardMatchingGame = self.createGame()
+    private lazy var game: CardMatchingGame = self.createGame()
 
     // MARK: Outlets
 
-    @IBOutlet var cardButtons: [UIButton]!
+    // Need private(set) for subclasses, *sigh*.
+    @IBOutlet private(set) var cardButtons: [UIButton]!
+
     @IBOutlet private weak var historyLabel: UILabel!
     @IBOutlet private weak var scoreLabel: UILabel!
 
@@ -35,6 +37,7 @@ class CardGameViewController: UIViewController {
 
     func createGame() -> CardMatchingGame {
         // Assumes that there are fewer cardButtons than there are cards in the deck.
+        // Semi-abstract? Users may want to set an explicit cardsToMatch, which defaults to 2.
         return CardMatchingGame(cardCount: UInt(cardButtons.count), deck: self.createDeck())!
     }
 
@@ -114,7 +117,7 @@ class CardGameViewController: UIViewController {
         updateUI()
     }
 
-    func updateUI() {
+    private func updateUI() {
         for cardButton in cardButtons {
             let cardButtonIndex = find(cardButtons, cardButton)!
             let card = game.cardAtIndex(UInt(cardButtonIndex))!
