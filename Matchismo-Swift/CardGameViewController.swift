@@ -6,21 +6,20 @@
 //  Copyright (c) 2014 Chrisna Aing. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
 class CardGameViewController: UIViewController {
 
     // MARK: -
-    // MARK: Private properties
+    // MARK: Properties
 
-    private lazy var game: CardMatchingGame = self.createGame()
+    lazy var game: CardMatchingGame = self.createGame()
 
     // MARK: Outlets
 
-    @IBOutlet private var cardButtons: [UIButton]!
+    @IBOutlet var cardButtons: [UIButton]!
     @IBOutlet private weak var historyLabel: UILabel!
-    @IBOutlet private weak var historySlider: UISlider!
-    @IBOutlet private weak var modeSegmentedControl: UISegmentedControl!
     @IBOutlet private weak var scoreLabel: UILabel!
 
     // MARK: -
@@ -34,54 +33,66 @@ class CardGameViewController: UIViewController {
     // MARK: -
     // MARK: Utilities
 
-    private func createGame() -> CardMatchingGame {
+    func createGame() -> CardMatchingGame {
         // Assumes that there are fewer cardButtons than there are cards in the deck.
-        return CardMatchingGame(cardCount: UInt(self.cardButtons.count), deck: self.createDeck())!
+        return CardMatchingGame(cardCount: UInt(cardButtons.count), deck: self.createDeck())!
     }
 
-    private func titleForCard(card: Card) -> String? {
-        return card.chosen ? card.contents : nil
+    func titleForCard(card: Card) -> NSAttributedString? {
+        // Abstract
+        return nil
     }
 
-    private func backgroundImageForCard(card: Card) -> UIImage {
-        return UIImage(named: card.chosen ? "CardFront" : "CardBack")!
+    func backgroundImageForCard(card: Card) -> UIImage? {
+        // Abstract
+        return nil
     }
 
-    private func stringForCards(cards: [Card]) -> String {
-        var cardsString = ""
-        for card in cards {
-            cardsString += card.contents
-        }
-        return cardsString
+    func stringForCards(cards: [Card]) -> NSAttributedString? {
+        // Abstract; will cause application to crash if used.
+        return nil
     }
 
-    private func stringForMoveAtIndex(index: UInt) -> String {
+    private func stringForMoveAtIndex(index: UInt) -> NSAttributedString {
         // Use the history array provided by CardMatchingGame to generate the final string.
-        var moveString = ""
+        let moveString = NSMutableAttributedString()
         if index < UInt(game.history.count) {
             let move = game.history[Int(index)]
-            let cards = stringForCards(move.cards)
+            // Getting a little frisky here!
+            let cards = stringForCards(move.cards)!
             let score = move.matchScore
+
             switch (move.matchAttempted, move.matched) {
-            case (true, true): moveString = "Matched \(cards) for \(score) point" + (score != 1 ? "s." : ".")
-            case (true, false): moveString = "\(cards) don't match! \(score) point penalty!"
-            case (false, _): moveString = "\(cards)"
+            case (true, true):
+                moveString.appendAttributedString(NSAttributedString(string: "Matched "))
+                moveString.appendAttributedString(cards)
+                moveString.appendAttributedString(
+                    NSAttributedString(string: " for \(score) point" + (score != 1 ? "s." : ".")))
+            case (true, false):
+                moveString.appendAttributedString(cards)
+                moveString.appendAttributedString(
+                    NSAttributedString(string: " don't match! \(score) point penalty!"))
+            case (false, _): moveString.appendAttributedString(cards)
             default: break
             }
         }
-        return moveString
+        return NSAttributedString(attributedString: moveString)
     }
 
     // MARK: -
     // MARK: Game
+
+    func createNewGame() {
+        game = createGame()
+        resetUI()
+    }
 
     @IBAction func startNewGame() {
         let alertController = UIAlertController(title: "Start New Game", message: "Are you sure?", preferredStyle: .Alert)
         let noAction = UIAlertAction(title: "No", style: .Cancel, handler: nil)
         let yesAction = UIAlertAction(title: "Yes", style: .Default) { (action) in
             dispatch_async(dispatch_get_main_queue()) {
-                self.game = self.createGame()
-                self.resetUI()
+                self.createNewGame()
             }
         }
         alertController.addAction(noAction)
@@ -90,14 +101,6 @@ class CardGameViewController: UIViewController {
     }
 
     @IBAction func touchCardButton(sender: UIButton) {
-        if modeSegmentedControl.enabled {
-            modeSegmentedControl.enabled = false
-            switch self.modeSegmentedControl.selectedSegmentIndex {
-            case 0: self.game.cardsToMatch = 2
-            case 1: self.game.cardsToMatch = 3
-            default: break
-            }
-        }
         // Assumes that all buttons are inside cardButtons.
         let cardButtonIndex = find(cardButtons, sender)!
         game.chooseCardAtIndex(UInt(cardButtonIndex))
@@ -107,14 +110,7 @@ class CardGameViewController: UIViewController {
     // MARK: -
     // MARK: UI
 
-    @IBAction func slideThroughHistory(sender: UISlider) {
-        let historyIndex = UInt(round(sender.value))
-        historyLabel.text = stringForMoveAtIndex(historyIndex)
-        historyLabel.alpha = historyIndex < UInt(round(sender.maximumValue)) ? 0.5 : 1.0
-    }
-
     private func resetUI() {
-        modeSegmentedControl.enabled = true
         updateUI()
     }
 
@@ -122,16 +118,15 @@ class CardGameViewController: UIViewController {
         for cardButton in cardButtons {
             let cardButtonIndex = find(cardButtons, cardButton)!
             let card = game.cardAtIndex(UInt(cardButtonIndex))!
-            cardButton.setTitle(titleForCard(card), forState: .Normal)
+            cardButton.setAttributedTitle(titleForCard(card), forState: .Normal)
             cardButton.setBackgroundImage(backgroundImageForCard(card), forState: .Normal)
             cardButton.enabled = !card.matched
         }
+
         scoreLabel.text = "Score: \(game.score)"
+
         let maxHistoryIndex = game.history.isEmpty ? 0 : game.history.count - 1
-        historySlider.maximumValue = Float(maxHistoryIndex)
-        historySlider.enabled = historySlider.minimumValue == historySlider.maximumValue ? false : true
-        historySlider.setValue(Float(maxHistoryIndex), animated: true)
-        slideThroughHistory(historySlider)
+        historyLabel.attributedText = stringForMoveAtIndex(UInt(maxHistoryIndex))
     }
 
 }
