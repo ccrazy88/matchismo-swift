@@ -15,6 +15,13 @@ class CardGameViewController: UIViewController {
 
     private lazy var game: CardMatchingGame = self.createGame()
 
+    // MARK: Private Computed Properties
+
+    private var maxHistoryIndex: Int {
+        get { return game.history.isEmpty ? 0 : game.history.count - 1 }
+        set { }
+    }
+
     // MARK: Outlets
 
     // Need private(set) for subclasses, *sigh*.
@@ -125,11 +132,23 @@ class CardGameViewController: UIViewController {
             cardButton.setBackgroundImage(backgroundImageForCard(card), forState: .Normal)
             cardButton.enabled = !card.matched
         }
-
         scoreLabel.text = "Score: \(game.score)"
-
-        let maxHistoryIndex = game.history.isEmpty ? 0 : game.history.count - 1
         historyLabel.attributedText = stringForMoveAtIndex(UInt(maxHistoryIndex))
+    }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "history" {
+            let hvc = segue.destinationViewController as CardGameHistoryViewController
+            var history = NSMutableAttributedString()
+            for index in 0...maxHistoryIndex {
+                history.appendAttributedString(stringForMoveAtIndex(UInt(index)))
+                history.appendAttributedString(NSAttributedString(string: "\n"))
+            }
+            history.addAttribute(NSFontAttributeName,
+                                 value: UIFont.preferredFontForTextStyle(UIFontTextStyleBody),
+                                 range: NSMakeRange(0, history.length))
+            hvc.history = history
+        }
     }
 
 }
