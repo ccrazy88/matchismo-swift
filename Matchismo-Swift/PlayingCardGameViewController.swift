@@ -2,7 +2,6 @@
 //  PlayingCardGameViewController.swift
 //  Matchismo-Swift
 //
-//  Created by Chrisna Aing on 12/24/14.
 //  Copyright (c) 2014 Chrisna Aing. All rights reserved.
 //
 
@@ -14,9 +13,8 @@ class PlayingCardGameViewController: CardGameViewController {
     // MARK: Utilities
 
     override func createGame() -> CardMatchingGame {
-        let game = CardMatchingGame(cardCount: UInt(cardButtons.count), deck: self.createDeck())!
-        game.cardsToMatch = 2
-        return game
+        return CardMatchingGame(cardCount: UInt(cardButtons.count), deck: self.createDeck(),
+                                cardsToMatch: 2)!
     }
 
     override func createDeck() -> Deck {
@@ -42,6 +40,7 @@ class PlayingCardGameViewController: CardGameViewController {
     override func stringForCards(cards: [Card]) -> NSAttributedString? {
         var cardsString = ""
         for card in cards {
+            // Don't use titleForCard, which adds a black text attribute.
             cardsString += card.contents
         }
         return NSAttributedString(string: cardsString)

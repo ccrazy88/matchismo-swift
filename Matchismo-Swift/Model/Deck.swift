@@ -2,7 +2,6 @@
 //  Deck.swift
 //  Matchismo-Swift
 //
-//  Created by Chrisna Aing on 10/26/14.
 //  Copyright (c) 2014 Chrisna Aing. All rights reserved.
 //
 
@@ -29,6 +28,7 @@ class Deck: NSObject {
     func drawRandomCard() -> Card? {
         var randomCard: Card?
         if !cards.isEmpty {
+            // arc4random_uniform is not affected by modulo bias.
             let index = Int(arc4random_uniform(UInt32(cards.count)))
             randomCard = cards[index]
             cards.removeAtIndex(index)

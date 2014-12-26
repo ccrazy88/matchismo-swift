@@ -2,7 +2,6 @@
 //  CardMatchingGame.swift
 //  Matchismo-Swift
 //
-//  Created by Chrisna Aing on 12/9/14.
 //  Copyright (c) 2014 Chrisna Aing. All rights reserved.
 //
 
@@ -24,29 +23,29 @@ class CardMatchingGame: NSObject {
     // MARK: Private Properties
 
     private lazy var cards = [Card]()
-    private var _cardsToMatch: UInt?
+    
+    // Why?: http://stackoverflow.com/questions/26495586
+    private let cardsToMatch: UInt!
 
     // MARK: Read-only Properties
     
     private(set) var score: Int = 0
     private(set) lazy var history = [CardMatchingGameResult]()
 
-    // MARK: Public Properties
-
-    var cardsToMatch: UInt {
-        get { return _cardsToMatch ?? Constant.minCardsToMatch }
-        set (newCardsToMatch) {
-            if newCardsToMatch >= Constant.minCardsToMatch && newCardsToMatch <= UInt(cards.count) {
-                _cardsToMatch = newCardsToMatch
-            }
-        }
-    }
-
     // MARK: -
     // MARK: Initializers
 
-    init?(cardCount: UInt, deck: Deck) {
+    init?(cardCount: UInt, deck: Deck, cardsToMatch: UInt) {
         super.init()
+
+        // Hopefully the number of cards to match makes sense.
+        if cardsToMatch < Constant.minCardsToMatch || cardsToMatch > cardCount {
+            return nil
+        } else {
+            self.cardsToMatch = cardsToMatch
+        }
+
+        // Draw cards randomly.
         for count in 0..<cardCount {
             if let card = deck.drawRandomCard() {
                 cards.append(card)
@@ -54,6 +53,11 @@ class CardMatchingGame: NSObject {
                 return nil
             }
         }
+
+    }
+
+    convenience init?(cardCount: UInt, deck: Deck) {
+        self.init(cardCount: cardCount, deck: deck, cardsToMatch: Constant.minCardsToMatch)
     }
 
     // MARK: -

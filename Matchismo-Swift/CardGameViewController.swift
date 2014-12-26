@@ -2,7 +2,6 @@
 //  CardGameViewController.swift
 //  Matchismo-Swift
 //
-//  Created by Chrisna Aing on 10/25/14.
 //  Copyright (c) 2014 Chrisna Aing. All rights reserved.
 //
 
@@ -91,7 +90,8 @@ class CardGameViewController: UIViewController {
     }
 
     @IBAction func startNewGame() {
-        let alertController = UIAlertController(title: "Start New Game", message: "Are you sure?", preferredStyle: .Alert)
+        let alertController = UIAlertController(title: "Start New Game", message: "Are you sure?",
+                                                preferredStyle: .Alert)
         let noAction = UIAlertAction(title: "No", style: .Cancel, handler: nil)
         let yesAction = UIAlertAction(title: "Yes", style: .Default) { (action) in
             dispatch_async(dispatch_get_main_queue()) {

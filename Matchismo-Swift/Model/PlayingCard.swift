@@ -2,7 +2,6 @@
 //  PlayingCard.swift
 //  Matchismo-Swift
 //
-//  Created by Chrisna Aing on 10/29/14.
 //  Copyright (c) 2014 Chrisna Aing. All rights reserved.
 //
 
@@ -15,48 +14,35 @@ class PlayingCard: Card {
 
     // Hack!
     private struct Utility {
-        static let rankStrings = ["?", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+        static let rankStrings = ["?", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q",
+                                  "K"]
         static let validSuits = ["♠️", "♣️", "♥️", "♦️"]
         static let maxRank = UInt(rankStrings.count) - 1
     }
 
-    // MARK: Private Properties
-
-    private var _rank: UInt?
-    private var _suit: String?
-
     // MARK: Public Properties
 
-    var rank: UInt {
-        get { return _rank ?? 0 }
-        set (newRank) {
-            if newRank <= Utility.maxRank {
-                _rank = newRank
-            }
-        }
-    }
-
-    var suit: String {
-        get { return _suit ?? "?" }
-        set (newSuit) {
-            if contains(Utility.validSuits, newSuit) {
-                _suit = newSuit
-            }
-        }
-    }
-    
-    override var contents: String {
-        get { return "\(Utility.rankStrings[Int(rank)])\(self.suit)" }
-        set { }
-    }
+    // Why?: http://stackoverflow.com/questions/26495586
+    let rank: UInt!
+    let suit: String!
 
     // MARK: -
     // MARK: Initializers
 
-    init(rank: UInt, suit: String, chosen: Bool = false, matched: Bool = false) {
-        super.init(contents: "", chosen: chosen, matched: matched)
-        self.rank = rank
-        self.suit = suit
+    init?(rank: UInt, suit: String, chosen: Bool = false, matched: Bool = false) {
+        super.init(
+            contents: "\(Utility.rankStrings[Int(rank)])\(suit)", chosen: chosen, matched: matched)
+
+        if rank > 0 && rank <= Utility.maxRank {
+            self.rank = rank
+        } else {
+            return nil
+        }
+        if contains(Utility.validSuits, suit) {
+            self.suit = suit
+        } else {
+            return nil
+        }
     }
 
     // MARK: -
@@ -78,13 +64,13 @@ class PlayingCard: Card {
 
     private func uniqueRanks(cards: [PlayingCard]) -> UInt {
         var ranks = [UInt: UInt]()
-        cards.map { ranks.updateValue(1, forKey: $0.rank) }
+        cards.map { ranks[$0.rank] = 1 }
         return UInt(ranks.count)
     }
 
     private func uniqueSuits(cards: [PlayingCard]) -> UInt {
         var suits = [String: UInt]()
-        cards.map { suits.updateValue(1, forKey: $0.suit) }
+        cards.map { suits[$0.suit] = 1 }
         return UInt(suits.count)
     }
 
@@ -93,7 +79,7 @@ class PlayingCard: Card {
 
     override func match(otherCards: [Card]) -> Int {
         var score = 0
-        // Matching with one other card and two other cards supported.
+        // Matching with one other PlayingCard and two other PlayingCards supported.
         switch otherCards.count {
         case 1:
             if let otherPlayingCard = otherCards.first as? PlayingCard {

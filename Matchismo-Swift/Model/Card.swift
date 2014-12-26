@@ -2,7 +2,6 @@
 //  Card.swift
 //  Matchismo-Swift
 //
-//  Created by Chrisna Aing on 10/25/14.
 //  Copyright (c) 2014 Chrisna Aing. All rights reserved.
 //
 
@@ -13,7 +12,7 @@ class Card: NSObject {
     // MARK: -
     // MARK: Public Properties
 
-    var contents: String
+    let contents: String
     var chosen: Bool
     var matched: Bool
 
