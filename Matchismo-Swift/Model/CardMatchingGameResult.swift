@@ -12,4 +12,5 @@ struct CardMatchingGameResult {
     let matchAttempted: Bool
     let matched: Bool
     let matchScore: Int
+    let time: NSDate
 }

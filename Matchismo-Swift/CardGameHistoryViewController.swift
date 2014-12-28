@@ -10,10 +10,18 @@ import UIKit
 
 class CardGameHistoryViewController: UIViewController {
 
-    @IBOutlet weak var historyTextView: UITextView!
-
+    // MARK: -
+    // MARK: Public Properties
+   
     var history = NSAttributedString()
 
+    // MARK: Outlets
+
+    @IBOutlet private weak var historyTextView: UITextView!
+
+    // MARK: -
+    // MARK: View Lifecycle
+    
     override func viewWillAppear(animated: Bool) {
         historyTextView.attributedText = history
     }

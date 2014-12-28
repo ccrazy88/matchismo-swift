@@ -46,4 +46,12 @@ class PlayingCardGameViewController: CardGameViewController {
         return NSAttributedString(string: cardsString)
     }
 
+    // MARK: -
+    // MARK: Game
+
+    override func createNewGame() {
+        storeGameStatistics("Match")
+        super.createNewGame()
+    }
+
 }

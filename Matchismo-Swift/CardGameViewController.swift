@@ -76,7 +76,8 @@ class CardGameViewController: UIViewController {
                 moveString.appendAttributedString(NSAttributedString(string: "Matched "))
                 moveString.appendAttributedString(cards)
                 moveString.appendAttributedString(
-                    NSAttributedString(string: " for \(score) point" + (score != 1 ? "s." : ".")))
+                    NSAttributedString(string: " for \(score) point" + (abs(score) != 1 ? "s" : "")
+                                       + "."))
             case (true, false):
                 moveString.appendAttributedString(cards)
                 moveString.appendAttributedString(
@@ -86,6 +87,23 @@ class CardGameViewController: UIViewController {
             }
         }
         return NSAttributedString(attributedString: moveString)
+    }
+
+    func storeGameStatistics(gameType: String) {
+        if game.history.count > 0 {
+            var scores = NSUserDefaults.standardUserDefaults().arrayForKey(Constant.scoresKey) ?? []
+
+            // Compute all information required.
+            let startTime = game.history.first!.time
+            let endTime = game.history.last!.time
+            let seconds = Int(round(endTime.timeIntervalSinceDate(startTime)))
+
+            // Write and synchronize.
+            scores.append([Constant.typeKey: gameType, Constant.scoreKey: game.score,
+                           Constant.startTimeKey: startTime, Constant.durationKey: seconds])
+            NSUserDefaults.standardUserDefaults().setObject(scores, forKey: Constant.scoresKey)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
     }
 
     // MARK: -

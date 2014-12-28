@@ -13,10 +13,7 @@ class CardMatchingGame: NSObject {
     // MARK: "Class" Properties
 
     // Hack!
-    private struct Constant {
-        static let choice = 1
-        static let match = 4
-        static let mismatch = 2
+    private struct Utility {
         static let minCardsToMatch: UInt = 2
     }
 
@@ -39,7 +36,7 @@ class CardMatchingGame: NSObject {
         super.init()
 
         // Hopefully the number of cards to match makes sense.
-        if cardsToMatch < Constant.minCardsToMatch || cardsToMatch > cardCount {
+        if cardsToMatch < Utility.minCardsToMatch || cardsToMatch > cardCount {
             return nil
         } else {
             self.cardsToMatch = cardsToMatch
@@ -57,7 +54,7 @@ class CardMatchingGame: NSObject {
     }
 
     convenience init?(cardCount: UInt, deck: Deck) {
-        self.init(cardCount: cardCount, deck: deck, cardsToMatch: Constant.minCardsToMatch)
+        self.init(cardCount: cardCount, deck: deck, cardsToMatch: Utility.minCardsToMatch)
     }
 
     // MARK: -
@@ -65,6 +62,10 @@ class CardMatchingGame: NSObject {
 
     func cardAtIndex(index: UInt) -> Card? {
         return (index < UInt(cards.count)) ? cards[Int(index)] : nil
+    }
+
+    func getConstant(key: String, defaultValue: Int) -> Int {
+        return NSUserDefaults.standardUserDefaults().objectForKey(key) as? Int ?? defaultValue
     }
 
     // MARK: -
@@ -87,18 +88,18 @@ class CardMatchingGame: NSObject {
                         matchScore = card.match(otherCards)
                         switch matchScore {
                         case 0:
-                            matchScore += Constant.mismatch
+                            matchScore += getConstant(Constant.mismatchKey, defaultValue: Constant.mismatch)
                             score -= matchScore
                             otherCards.map { $0.chosen = false }
                         default:
-                            matchScore *= Constant.match
+                            matchScore *= getConstant(Constant.matchKey, defaultValue: Constant.match)
                             score += matchScore
                             card.matched = true
                             otherCards.map { $0.matched = true }
                         }
                         matchAttempted = true
                     }
-                    score -= Constant.choice
+                    score -= getConstant(Constant.choiceKey, defaultValue: Constant.choice)
                     card.chosen = true
                 }
 
@@ -109,7 +110,8 @@ class CardMatchingGame: NSObject {
                     cards: otherCards + filter([card]) { $0.chosen },
                     matchAttempted: matchAttempted,
                     matched: card.matched,
-                    matchScore: matchScore))
+                    matchScore: matchScore,
+                    time: NSDate()))
             }
         }
     }
