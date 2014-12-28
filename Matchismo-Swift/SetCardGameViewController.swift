@@ -85,7 +85,7 @@ class SetCardGameViewController: CardGameViewController {
     // MARK: Game
 
     override func createNewGame() {
-        storeGameStatistics("Match")
+        storeGameStatistics("Set")
         super.createNewGame()
     }
 
