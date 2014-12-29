@@ -30,8 +30,8 @@ class PlayingCard: Card {
     // MARK: Initializers
 
     init?(rank: UInt, suit: String, chosen: Bool = false, matched: Bool = false) {
-        super.init(
-            contents: "\(Utility.rankStrings[Int(rank)])\(suit)", chosen: chosen, matched: matched)
+        super.init(contents: "\(Utility.rankStrings[Int(rank)])\(suit)", chosen: chosen,
+                   matched: matched)
 
         if rank > 0 && rank <= Utility.maxRank {
             self.rank = rank
@@ -93,11 +93,11 @@ class PlayingCard: Card {
             if let otherPlayingCards = otherCards as? [PlayingCard] {
                 let allCards = [self] + otherPlayingCards
                 switch (uniqueRanks(allCards), uniqueSuits(allCards)) {
-                case (1, _): score = 100 // Three of a kind!
-                case (_, 1): score = 4 // Flush!
-                case (2, 2): score = 3 // Pair (rank) and pair (suit)!
-                case (2, _): score = 2 // Pair (rank)!
-                case (_, 2): score = 1 // Pair (suit)!
+                    case (1, _): score = 100 // Three of a kind!
+                    case (_, 1): score = 4 // Flush!
+                    case (2, 2): score = 3 // Pair (rank) and pair (suit)!
+                    case (2, _): score = 2 // Pair (rank)!
+                    case (_, 2): score = 1 // Pair (suit)!
                 default: break
                 }
             }

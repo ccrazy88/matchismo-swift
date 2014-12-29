@@ -33,9 +33,9 @@ class SetCard: Card {
           matched: Bool = false) {
         super.init(contents: "", chosen: chosen, matched: matched)
 
-        if color >= Utility.countOfType || number >= Utility.countOfType || shading >=
-           Utility.countOfType || shape >= Utility.countOfType {
-                return nil
+        if color >= Utility.countOfType || number >= Utility.countOfType ||
+           shading >= Utility.countOfType || shape >= Utility.countOfType {
+            return nil
         } else {
             self.color = color
             self.number = number

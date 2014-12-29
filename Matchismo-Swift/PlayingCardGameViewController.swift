@@ -37,21 +37,4 @@ class PlayingCardGameViewController: CardGameViewController {
         return UIImage(named: card.chosen ? "CardFront" : "CardBack")
     }
 
-    override func stringForCards(cards: [Card]) -> NSAttributedString? {
-        var cardsString = ""
-        for card in cards {
-            // Don't use titleForCard, which adds a black text attribute.
-            cardsString += card.contents
-        }
-        return NSAttributedString(string: cardsString)
-    }
-
-    // MARK: -
-    // MARK: Game
-
-    override func createNewGame() {
-        storeGameStatistics("Match")
-        super.createNewGame()
-    }
-
 }

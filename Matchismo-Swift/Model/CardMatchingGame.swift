@@ -14,6 +14,9 @@ class CardMatchingGame: NSObject {
 
     // Hack!
     private struct Utility {
+        static let choice = 1
+        static let match = 4
+        static let mismatch = 2
         static let minCardsToMatch: UInt = 2
     }
 
@@ -50,7 +53,6 @@ class CardMatchingGame: NSObject {
                 return nil
             }
         }
-
     }
 
     convenience init?(cardCount: UInt, deck: Deck) {
@@ -62,10 +64,6 @@ class CardMatchingGame: NSObject {
 
     func cardAtIndex(index: UInt) -> Card? {
         return (index < UInt(cards.count)) ? cards[Int(index)] : nil
-    }
-
-    func getConstant(key: String, defaultValue: Int) -> Int {
-        return NSUserDefaults.standardUserDefaults().objectForKey(key) as? Int ?? defaultValue
     }
 
     // MARK: -
@@ -88,18 +86,18 @@ class CardMatchingGame: NSObject {
                         matchScore = card.match(otherCards)
                         switch matchScore {
                         case 0:
-                            matchScore += getConstant(Constant.mismatchKey, defaultValue: Constant.mismatch)
+                            matchScore += Utility.mismatch
                             score -= matchScore
                             otherCards.map { $0.chosen = false }
                         default:
-                            matchScore *= getConstant(Constant.matchKey, defaultValue: Constant.match)
+                            matchScore *= Utility.match
                             score += matchScore
                             card.matched = true
                             otherCards.map { $0.matched = true }
                         }
                         matchAttempted = true
                     }
-                    score -= getConstant(Constant.choiceKey, defaultValue: Constant.choice)
+                    score -= Utility.choice
                     card.chosen = true
                 }
 

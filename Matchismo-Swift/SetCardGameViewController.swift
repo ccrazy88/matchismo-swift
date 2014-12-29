@@ -69,24 +69,4 @@ class SetCardGameViewController: CardGameViewController {
         return UIImage(named: card.chosen ? "ChosenCardFront" : "CardFront")
     }
 
-    override func stringForCards(cards: [Card]) -> NSAttributedString? {
-        var cardsString = NSMutableAttributedString()
-        for card in cards {
-            if let title = titleForCard(card) {
-                cardsString.appendAttributedString(title)
-            } else {
-                return nil
-            }
-        }
-        return NSAttributedString(attributedString: cardsString)
-    }
-
-    // MARK: -
-    // MARK: Game
-
-    override func createNewGame() {
-        storeGameStatistics("Set")
-        super.createNewGame()
-    }
-
 }
